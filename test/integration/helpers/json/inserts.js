@@ -1,4 +1,4 @@
-module.exports = function(bookshelf) {
+module.exports = function (bookshelf) {
   var knex = bookshelf.knex;
 
   return Promise.all([

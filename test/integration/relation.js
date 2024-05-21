@@ -1,29 +1,29 @@
 var equal = require('assert').equal;
 
-module.exports = function(Bookshelf) {
-  describe('Relation', function() {
+module.exports = function (Bookshelf) {
+  describe('Relation', function () {
     var Relation = require('../../lib/relation');
 
     // TODO: Move all this Model creation stuff to a better place in helpers
     var Photo = Bookshelf.Model.extend({
       tableName: 'photos',
-      imageable: function() {
+      imageable: function () {
         this.morphTo('imageable', Doctor, Patient);
       }
     });
 
     var Doctor = Bookshelf.Model.extend({
       tableName: 'doctors',
-      photos: function() {
+      photos: function () {
         return this.morphMany(Photo, 'imageable');
       },
-      patients: function() {
+      patients: function () {
         return this.belongsToMany(Patient).through(Appointment);
       },
-      patientsStd: function() {
+      patientsStd: function () {
         return this.belongsToMany(Patient);
       },
-      meta: function() {
+      meta: function () {
         return this.hasOne(DoctorMeta, 'doctoring_id');
       }
     });
@@ -31,34 +31,34 @@ module.exports = function(Bookshelf) {
     var DoctorMeta = Bookshelf.Model.extend({
       idAttribute: 'customId',
       tableName: 'doctormeta',
-      doctor: function() {
+      doctor: function () {
         return this.belongsTo(Doctor, 'doctoring_id');
       }
     });
 
     var Patient = Bookshelf.Model.extend({
       tableName: 'patients',
-      doctors: function() {
+      doctors: function () {
         return this.belongsToMany(Doctor).through(Appointment);
       },
-      photos: function() {
+      photos: function () {
         return this.morphMany(Photo, 'imageable');
       }
     });
 
     var Appointment = Bookshelf.Model.extend({
       tableName: 'appointments',
-      patient: function() {
+      patient: function () {
         return this.belongsTo(Patient);
       },
-      doctor: function() {
+      doctor: function () {
         return this.belongsTo(Doctor);
       }
     });
 
     var Supplier = Bookshelf.Model.extend({
       tableName: 'suppliers',
-      accountHistory: function() {
+      accountHistory: function () {
         return this.hasOne(AccountHistory).through(Account);
       }
     });
@@ -69,54 +69,54 @@ module.exports = function(Bookshelf) {
 
     var AccountHistory = Bookshelf.Model.extend({
       tableName: 'account_histories',
-      supplier: function() {
+      supplier: function () {
         return this.belongsTo(Supplier).through(Account);
       }
     });
 
     var Customer = Bookshelf.Model.extend({
       tableName: 'customers',
-      locale: function() {
+      locale: function () {
         return this.hasOne(Locale).through(Translation, 'isoCode', 'customer', 'code', 'name');
       },
-      locales: function() {
+      locales: function () {
         return this.hasMany(Locale).through(Translation, 'isoCode', 'customer', 'code', 'name');
       }
     });
 
     var Translation = Bookshelf.Model.extend({
       tableName: 'translations',
-      locale: function() {
+      locale: function () {
         return this.belongsTo(Locale, 'code', 'isoCode');
       }
     });
 
     var Locale = Bookshelf.Model.extend({
       tableName: 'locales',
-      customer: function() {
+      customer: function () {
         return this.belongsTo(Customer).through(Translation, 'isoCode', 'customer', 'code', 'name');
       },
-      customers: function() {
+      customers: function () {
         return this.belongsToMany(Customer, 'translations', 'code', 'customer', 'isoCode', 'name');
       },
-      customersThrough: function() {
+      customersThrough: function () {
         return this.belongsToMany(Customer).through(Translation, 'code', 'customer', 'isoCode', 'name');
       },
-      translation: function() {
+      translation: function () {
         return this.hasOne(Translation, 'code', 'isoCode');
       },
-      translations: function() {
+      translations: function () {
         return this.hasMany(Translation, 'code', 'isoCode');
       }
     });
 
-    describe('Bookshelf.Relation', function() {
-      it('should not error if the type/target are not specified', function() {
+    describe('Bookshelf.Relation', function () {
+      it('should not error if the type/target are not specified', function () {
         var relation = new Relation();
         equal(relation.type, undefined);
       });
 
-      it('should not error when accessing a relation through an uninstantiated model', function() {
+      it('should not error when accessing a relation through an uninstantiated model', function () {
         var relation = Doctor.prototype.meta();
         var relatedData = relation.relatedData;
 
@@ -135,7 +135,7 @@ module.exports = function(Bookshelf) {
         equal(relatedData.parentFk, undefined);
       });
 
-      it('should handle a hasOne relation', function() {
+      it('should handle a hasOne relation', function () {
         var base = new Doctor({id: 1});
         var relation = base.meta();
         var _knex = relation.query();
@@ -164,7 +164,7 @@ module.exports = function(Bookshelf) {
         );
       });
 
-      it('should handle a hasOne -> through relation', function() {
+      it('should handle a hasOne -> through relation', function () {
         var base = new Supplier({id: 1});
         var relation = base.accountHistory();
         var _knex = relation.query();
@@ -202,7 +202,7 @@ module.exports = function(Bookshelf) {
         equal(_knex.toString(), sql);
       });
 
-      it('should handle a belongsTo -> through relation', function() {
+      it('should handle a belongsTo -> through relation', function () {
         var base = new AccountHistory({id: 1});
         var relation = base.supplier();
         var _knex = relation.query();
@@ -240,7 +240,7 @@ module.exports = function(Bookshelf) {
         equal(_knex.toString(), sql);
       });
 
-      it('should handle a belongsToMany -> through relation', function() {
+      it('should handle a belongsToMany -> through relation', function () {
         var base = new Doctor({id: 1});
         var relation = base.patients();
         var _knex = relation.query();
@@ -278,7 +278,7 @@ module.exports = function(Bookshelf) {
         equal(_knex.toString(), sql);
       });
 
-      it('should handle a standard belongsToMany relation', function() {
+      it('should handle a standard belongsToMany relation', function () {
         var base = new Doctor({id: 1});
         var relation = base.patientsStd();
         var _knex = relation.query();
@@ -309,7 +309,7 @@ module.exports = function(Bookshelf) {
         equal(_knex.toString(), sql);
       });
 
-      it('should handle polymorphic relations', function() {
+      it('should handle polymorphic relations', function () {
         var base = new Doctor({id: 1});
         var relation = base.photos();
         var _knex = relation.query();
@@ -338,7 +338,7 @@ module.exports = function(Bookshelf) {
         equal(_knex.toString(), sql);
       });
 
-      it('should handle a hasOne relation with explicit foreignKeyTarget', function() {
+      it('should handle a hasOne relation with explicit foreignKeyTarget', function () {
         var base = new Locale({isoCode: 'en'});
         var relation = base.translation();
         var _knex = relation.query();
@@ -367,7 +367,7 @@ module.exports = function(Bookshelf) {
         );
       });
 
-      it('should handle a hasOne -> through relation with explicit foreignKeyTarget', function() {
+      it('should handle a hasOne -> through relation with explicit foreignKeyTarget', function () {
         var base = new Customer({name: 'foobar'});
         var relation = base.locale();
         var _knex = relation.query();
@@ -405,7 +405,7 @@ module.exports = function(Bookshelf) {
         );
       });
 
-      it('should handle a hasMany relation with explicit foreignKeyTarget', function() {
+      it('should handle a hasMany relation with explicit foreignKeyTarget', function () {
         var base = new Locale({isoCode: 'en'});
         var relation = base.translations();
         var _knex = relation.query();
@@ -434,7 +434,7 @@ module.exports = function(Bookshelf) {
         );
       });
 
-      it('should handle a hasMany -> through relation with explicit foreignKeyTarget', function() {
+      it('should handle a hasMany -> through relation with explicit foreignKeyTarget', function () {
         var base = new Customer({name: 'foobar'});
         var relation = base.locales();
         var _knex = relation.query();
@@ -472,7 +472,7 @@ module.exports = function(Bookshelf) {
         );
       });
 
-      it('should handle a belongsTo relation with explicit foreignKeyTarget', function() {
+      it('should handle a belongsTo relation with explicit foreignKeyTarget', function () {
         var base = new Translation({code: 'en'});
         var relation = base.locale();
         var _knex = relation.query();
@@ -500,7 +500,7 @@ module.exports = function(Bookshelf) {
         equal(_knex.toString(), sql);
       });
 
-      it('should handle a belongsTo -> through relation with explicit foreignKeyTarget', function() {
+      it('should handle a belongsTo -> through relation with explicit foreignKeyTarget', function () {
         var base = new Locale({isoCode: 'en'});
         var relation = base.customer();
         var _knex = relation.query();
@@ -538,7 +538,7 @@ module.exports = function(Bookshelf) {
         equal(_knex.toString(), sql);
       });
 
-      it('should handle a belongsToMany relation with explicit foreignKeyTarget and otherKeyTarget', function() {
+      it('should handle a belongsToMany relation with explicit foreignKeyTarget and otherKeyTarget', function () {
         var base = new Locale({isoCode: 'en'});
         var relation = base.customers();
         var _knex = relation.query();
@@ -570,7 +570,7 @@ module.exports = function(Bookshelf) {
         equal(_knex.toString(), sql);
       });
 
-      it('should handle a belongsToMany -> through relation with explicit foreignKeyTarget and otherKeyTarget', function() {
+      it('should handle a belongsToMany -> through relation with explicit foreignKeyTarget and otherKeyTarget', function () {
         var base = new Locale({isoCode: 'en'});
         var relation = base.customersThrough();
         var _knex = relation.query();

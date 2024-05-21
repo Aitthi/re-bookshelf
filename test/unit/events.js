@@ -1,17 +1,17 @@
 var path = require('path');
 
-module.exports = function() {
+module.exports = function () {
   var Events = require(path.resolve(process.cwd(), 'lib/base/events'));
 
-  describe('Events', function() {
+  describe('Events', function () {
     var events;
 
-    beforeEach(function() {
+    beforeEach(function () {
       events = new Events();
     });
 
-    describe('#off()', function() {
-      it('should only deregister the provided callback if passed', function() {
+    describe('#off()', function () {
+      it('should only deregister the provided callback if passed', function () {
         function eventHandler1() {
           throw new Error('Expected event handler to have not been called');
         }
@@ -31,7 +31,7 @@ module.exports = function() {
         expect(eventHandler2.callCount).to.equal(1);
       });
 
-      it('should deregister all callbacks if no callback is passed', function() {
+      it('should deregister all callbacks if no callback is passed', function () {
         function eventHandler1() {
           throw new Error('Expected event handler to have not been called');
         }
@@ -48,7 +48,7 @@ module.exports = function() {
         expect(events._eventsCount).to.equal(0);
       });
 
-      it('should deregister multiple space-separated events', function() {
+      it('should deregister multiple space-separated events', function () {
         function eventHandler() {
           throw new Error('Expected event handler to have not been called');
         }
@@ -62,9 +62,9 @@ module.exports = function() {
       });
     });
 
-    describe('#trigger()', function() {
-      it('should pass additional arguments to the listener', function() {
-        events.on('event', function(name, arg1, arg2) {
+    describe('#trigger()', function () {
+      it('should pass additional arguments to the listener', function () {
+        events.on('event', function (name, arg1, arg2) {
           expect(name).to.equal('event');
           expect(arg1).to.equal(1);
           expect(arg2).to.equal(2);
@@ -73,8 +73,8 @@ module.exports = function() {
       });
     });
 
-    describe('#once()', function() {
-      it('should remove itself but not other events', function() {
+    describe('#once()', function () {
+      it('should remove itself but not other events', function () {
         function onEventHandler() {
           /* Expected to be called */
           onEventHandler.callCount += 1;

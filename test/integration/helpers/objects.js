@@ -1,11 +1,11 @@
 // All Models & Collections Used in the Tests
 // (sort of mimics a simple multi-site blogging engine)
-module.exports = function(Bookshelf) {
+module.exports = function (Bookshelf) {
   var _ = require('lodash');
 
   function _parsed(attributes) {
     var parsed = {};
-    Object.keys(attributes).forEach(function(name) {
+    Object.keys(attributes).forEach(function (name) {
       parsed[name + '_parsed'] = attributes[name];
     });
     return parsed;
@@ -13,7 +13,7 @@ module.exports = function(Bookshelf) {
 
   function _format(attributes) {
     var formatted = {};
-    Object.keys(attributes).forEach(function(name) {
+    Object.keys(attributes).forEach(function (name) {
       formatted[name.replace('_parsed', '')] = attributes[name];
     });
     return formatted;
@@ -25,10 +25,10 @@ module.exports = function(Bookshelf) {
 
   var SiteMeta = Bookshelf.Model.extend({
     tableName: 'sitesmeta',
-    site: function() {
+    site: function () {
       return this.belongsTo(Site);
     },
-    info: function() {
+    info: function () {
       return this.hasOne(Info);
     }
   });
@@ -43,28 +43,28 @@ module.exports = function(Bookshelf) {
     defaults: {
       name: 'Your Cool Site'
     },
-    authors: function() {
+    authors: function () {
       return this.hasMany(Author);
     },
-    authorsParsed: function() {
+    authorsParsed: function () {
       return this.hasMany(AuthorParsed);
     },
-    photos: function() {
+    photos: function () {
       return this.morphMany(Photo, 'imageable');
     },
-    thumbnails: function() {
+    thumbnails: function () {
       return this.morphMany(Thumbnail, 'imageable', ['ImageableType', 'ImageableId']);
     },
-    blogs: function() {
+    blogs: function () {
       return this.hasMany(Blog);
     },
-    meta: function() {
+    meta: function () {
       return this.hasOne(SiteMeta);
     },
-    info: function() {
+    info: function () {
       return this.hasOne(Info).through(SiteMeta, 'meta_id');
     },
-    admins: function() {
+    admins: function () {
       return this.belongsToMany(Admin).withPivot('item');
     }
   });
@@ -74,7 +74,7 @@ module.exports = function(Bookshelf) {
   var SiteParsed = Site.extend({
     parse: _parsed,
     format: _format,
-    photos: function() {
+    photos: function () {
       return this.morphMany(PhotoParsed, 'imageable');
     }
   });
@@ -91,22 +91,22 @@ module.exports = function(Bookshelf) {
   // Author of a blog post.
   var Author = Bookshelf.Model.extend({
     tableName: 'authors',
-    site: function() {
+    site: function () {
       return this.belongsTo(Site);
     },
-    photo: function() {
+    photo: function () {
       return this.morphOne(Photo, 'imageable', 'profile_pic');
     },
-    thumbnail: function() {
+    thumbnail: function () {
       return this.morphOne(Thumbnail, 'imageable', ['ImageableType', 'ImageableId']);
     },
-    posts: function() {
+    posts: function () {
       return this.belongsToMany(Post);
     },
-    ownPosts: function() {
+    ownPosts: function () {
       return this.hasMany(Post, 'owner_id');
     },
-    blogs: function() {
+    blogs: function () {
       return this.belongsToMany(Blog).through(Post, 'owner_id');
     }
   });
@@ -116,7 +116,7 @@ module.exports = function(Bookshelf) {
   var AuthorParsed = Author.extend({
     parse: _parsed,
     format: _format,
-    photos: function() {
+    photos: function () {
       return this.morphMany(PhotoParsed, 'imageable', 'profile_pic');
     }
   });
@@ -124,14 +124,14 @@ module.exports = function(Bookshelf) {
   // Critic uses binary ID
   var Critic = Bookshelf.Model.extend({
     tableName: 'critics',
-    comments: function() {
+    comments: function () {
       return this.hasMany(CriticComment);
     }
   });
 
   var CriticComment = Bookshelf.Model.extend({
     tableName: 'critics_comments',
-    critic: function() {
+    critic: function () {
       return this.belongsTo(Critic);
     }
   });
@@ -139,19 +139,19 @@ module.exports = function(Bookshelf) {
   // A blog for a site.
   var Blog = Bookshelf.Model.extend({
     tableName: 'blogs',
-    site: function() {
+    site: function () {
       return this.belongsTo(Site);
     },
-    posts: function() {
+    posts: function () {
       return this.hasMany(Post);
     },
-    parsedPosts: function() {
+    parsedPosts: function () {
       return this.hasMany(PostParsed);
     },
-    validate: function(attrs) {
+    validate: function (attrs) {
       if (!attrs.title) return 'A title is required.';
     },
-    comments: function() {
+    comments: function () {
       return this.hasMany(Comment).through(Post);
     }
   });
@@ -164,16 +164,16 @@ module.exports = function(Bookshelf) {
       content: ''
     },
     hasTimestamps: false,
-    blog: function() {
+    blog: function () {
       return this.belongsTo(Blog);
     },
-    authors: function() {
+    authors: function () {
       return this.belongsToMany(Author);
     },
-    tags: function() {
+    tags: function () {
       return this.belongsToMany(Tag);
     },
-    comments: function() {
+    comments: function () {
       return this.hasMany(Comment);
     }
   });
@@ -189,17 +189,17 @@ module.exports = function(Bookshelf) {
       email: '',
       comment: ''
     },
-    posts: function() {
+    posts: function () {
       return this.belongsTo(Post);
     },
-    blog: function() {
+    blog: function () {
       return this.belongsTo(Blog).through(Post);
     }
   });
 
   var Tag = Bookshelf.Model.extend({
     tableName: 'tags',
-    posts: function() {
+    posts: function () {
       return this.belongsToMany(Post);
     }
   });
@@ -207,7 +207,7 @@ module.exports = function(Bookshelf) {
   var User = Bookshelf.Model.extend({
     tableName: 'users',
     idAttribute: 'uid',
-    roles: function() {
+    roles: function () {
       return this.belongsToMany(Role, 'users_roles', 'uid', 'rid');
     }
   });
@@ -215,24 +215,24 @@ module.exports = function(Bookshelf) {
   var Role = Bookshelf.Model.extend({
     tableName: 'roles',
     idAttribute: 'rid',
-    users: function() {
+    users: function () {
       return this.belongsToMany(User, 'users_roles', 'rid', 'uid');
     }
   });
 
   var Photo = Bookshelf.Model.extend({
     tableName: 'photos',
-    imageable: function() {
+    imageable: function () {
       return this.morphTo('imageable', Site, [Author, 'profile_pic']);
     },
-    imageableParsed: function() {
+    imageableParsed: function () {
       return this.morphTo('imageable', [AuthorParsed, 'profile_pic'], SiteParsed);
     }
   });
 
   var Thumbnail = Bookshelf.Model.extend({
     tableName: 'thumbnails',
-    imageable: function() {
+    imageable: function () {
       return this.morphTo('imageable', ['ImageableType', 'ImageableId'], Site, Author);
     }
   });
@@ -248,13 +248,13 @@ module.exports = function(Bookshelf) {
 
   var Customer = Bookshelf.Model.extend({
     tableName: 'Customer',
-    settings: function() {
+    settings: function () {
       return this.hasOne(Settings);
     },
-    locale: function() {
+    locale: function () {
       return this.hasOne(Locale).through(Translation, 'isoCode', 'customer', 'code', 'name');
     },
-    locales: function() {
+    locales: function () {
       return this.hasMany(Locale).through(Translation, 'isoCode', 'customer', 'code', 'name');
     }
   });
@@ -262,26 +262,26 @@ module.exports = function(Bookshelf) {
   var Hostname = Bookshelf.Model.extend({
     tableName: 'hostnames',
     idAttribute: 'hostname',
-    instance: function() {
+    instance: function () {
       return this.belongsTo(Instance);
     }
   });
 
   var Instance = Bookshelf.Model.extend({
     tableName: 'instances',
-    hostnames: function() {
+    hostnames: function () {
       return this.hasMany(Hostname);
     }
   });
 
   var ParsedModel = Bookshelf.Model.extend({
-    format: function(attrs) {
-      return _.transform(attrs, function(result, val, key) {
+    format: function (attrs) {
+      return _.transform(attrs, function (result, val, key) {
         result[_.snakeCase(key)] = val;
       });
     },
-    parse: function(attrs) {
-      return _.transform(attrs, function(result, val, key) {
+    parse: function (attrs) {
+      return _.transform(attrs, function (result, val, key) {
         result[_.camelCase(key)] = val;
       });
     }
@@ -290,7 +290,7 @@ module.exports = function(Bookshelf) {
   // Has columns: id, user_id, token
   var UserTokenParsed = ParsedModel.extend({
     tableName: 'tokens',
-    user: function() {
+    user: function () {
       return this.belongsTo(UserParsed);
     }
   });
@@ -321,30 +321,30 @@ module.exports = function(Bookshelf) {
   var JoinModel = Bookshelf.Model.extend({
     tableName: 'lefts_rights',
     defaults: {parsedName: ''},
-    format: function(attrs) {
+    format: function (attrs) {
       return _.reduce(
         attrs,
-        function(memo, val, key) {
+        function (memo, val, key) {
           memo[_.snakeCase(key)] = val;
           return memo;
         },
         {}
       );
     },
-    parse: function(attrs) {
+    parse: function (attrs) {
       return _.reduce(
         attrs,
-        function(memo, val, key) {
+        function (memo, val, key) {
           memo[_.camelCase(key)] = val;
           return memo;
         },
         {}
       );
     },
-    lefts: function() {
+    lefts: function () {
       return this.belongsTo(LeftModel);
     },
-    rights: function() {
+    rights: function () {
       return this.belongsTo(RightModel);
     }
   });
@@ -352,14 +352,14 @@ module.exports = function(Bookshelf) {
   var OrgModel = Bookshelf.Model.extend({
     tableName: 'organization',
     idAttribute: 'organization_id',
-    format: function(fields) {
+    format: function (fields) {
       var cols = {};
       for (var f in fields) {
         cols['organization_' + f] = fields[f];
       }
       return cols;
     },
-    parse: function(cols) {
+    parse: function (cols) {
       var fields = {};
       for (var c in cols) {
         fields[c.replace(/^organization_/, '')] = cols[c];
@@ -374,26 +374,26 @@ module.exports = function(Bookshelf) {
 
   var Translation = Bookshelf.Model.extend({
     tableName: 'translations',
-    locale: function() {
+    locale: function () {
       return this.belongsTo(Locale, 'code', 'isoCode');
     }
   });
 
   var Locale = Bookshelf.Model.extend({
     tableName: 'locales',
-    customer: function() {
+    customer: function () {
       return this.belongsTo(Customer).through(Translation, 'isoCode', 'customer', 'code', 'name');
     },
-    customers: function() {
+    customers: function () {
       return this.belongsToMany(Customer, 'translations', 'code', 'customer', 'isoCode', 'name');
     },
-    customersThrough: function() {
+    customersThrough: function () {
       return this.belongsToMany(Customer).through(Translation, 'code', 'customer', 'isoCode', 'name');
     },
-    translation: function() {
+    translation: function () {
       return this.hasOne(Translation, 'code', 'isoCode');
     },
-    translations: function() {
+    translations: function () {
       return this.hasMany(Translation, 'code', 'isoCode');
     }
   });
@@ -404,7 +404,7 @@ module.exports = function(Bookshelf) {
 
   var Backup = Bookshelf.Model.extend({
     tableName: 'backups',
-    type: function() {
+    type: function () {
       return this.belongsTo(BackupType);
     }
   });
@@ -412,19 +412,19 @@ module.exports = function(Bookshelf) {
   function generateEventModels(eventHooks) {
     var Photo = Bookshelf.Model.extend({
       tableName: 'photos',
-      imageable: function() {
+      imageable: function () {
         return this.morphTo('imageable', Site, [Author, 'profile_pic']);
       }
     });
 
     var Site = Bookshelf.Model.extend({
       tableName: 'sites',
-      photos: function() {
+      photos: function () {
         return this.morphMany(Photo, 'imageable');
       },
-      initialize: function() {
+      initialize: function () {
         this.constructor.__super__.initialize.apply(this, arguments);
-        this.on('fetching', function(model, columns, options) {
+        this.on('fetching', function (model, columns, options) {
           eventHooks.fetching('sites', model, columns, options);
         });
       }
@@ -432,15 +432,15 @@ module.exports = function(Bookshelf) {
 
     var Author = Bookshelf.Model.extend({
       tableName: 'authors',
-      site: function() {
+      site: function () {
         return this.belongsTo(Site);
       },
-      photo: function() {
+      photo: function () {
         return this.morphOne(Photo, 'imageable', 'profile_pic');
       },
-      initialize: function() {
+      initialize: function () {
         this.constructor.__super__.initialize.apply(this, arguments);
-        this.on('fetching', function(model, columns, options) {
+        this.on('fetching', function (model, columns, options) {
           eventHooks.fetching('authors', model, columns, options);
         });
       }

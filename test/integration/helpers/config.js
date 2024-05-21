@@ -2,7 +2,8 @@ module.exports = {
   mysql: {
     database: 'bookshelf_test',
     user: 'root',
-    encoding: 'utf8'
+    host: 'localhost',
+    port: 3306
   },
 
   postgres: {

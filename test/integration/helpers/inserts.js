@@ -1,4 +1,4 @@
-module.exports = function(bookshelf) {
+module.exports = function (bookshelf) {
   var knex = bookshelf.knex;
 
   return Promise.all([
@@ -340,7 +340,7 @@ module.exports = function(bookshelf) {
       {id: 2, organization_id: 2, name: 'Alice'}
     ])
   ])
-    .then(function() {
+    .then(function () {
       if (knex.client.dialect !== 'postgresql') return;
 
       return Promise.all([
@@ -350,7 +350,7 @@ module.exports = function(bookshelf) {
         knex.raw('SELECT setval(\'backup_types_id_seq\', (SELECT MAX(id) from "backup_types"));')
       ]);
     })
-    .catch(function(e) {
+    .catch(function (e) {
       console.log(e.stack);
     });
 };

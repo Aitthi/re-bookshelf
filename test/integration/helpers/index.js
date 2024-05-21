@@ -1,20 +1,20 @@
 var _ = require('lodash');
 
-exports.formatNumber = function(dialect) {
+exports.formatNumber = function (dialect) {
   return {
     mysql: _.identity,
     sqlite3: _.identity,
-    postgresql: function(count) {
+    postgresql: function (count) {
       return count.toString();
     }
   }[dialect];
 };
 
 exports.countModels = function countModels(Model, options) {
-  return function() {
+  return function () {
     return Model.forge()
       .count(options)
-      .then(function(count) {
+      .then(function (count) {
         if (typeof count === 'string') return parseInt(count);
         return count;
       });
@@ -34,7 +34,7 @@ exports.sort = function sort(model) {
 exports.sortCollection = function sortCollection(collection) {
   if (!Array.isArray(collection)) return collection;
 
-  collection.sort(function(model1, model2) {
+  collection.sort(function (model1, model2) {
     return model1.id - model2.id;
   });
 

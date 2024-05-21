@@ -1,13 +1,13 @@
 var _ = require('lodash');
 const checkJsonSupport = require('./helpers/json/supported');
 
-module.exports = function(bookshelf) {
+module.exports = function (bookshelf) {
   let isJsonSupported;
 
   function checkResponse(actual, expected) {
     // Knex will store strings if client does not support JSON.
     if (!isJsonSupported) {
-      expected = _.mapValues(expected, function(value) {
+      expected = _.mapValues(expected, function (value) {
         if (_.isObject(value)) {
           return JSON.stringify(value);
         }
@@ -17,24 +17,24 @@ module.exports = function(bookshelf) {
     expect(actual).to.eql(expected);
   }
 
-  before(function() {
+  before(function () {
     if (!checkJsonSupport(bookshelf)) return;
 
     isJsonSupported = true;
 
-    return require('./helpers/json/migration')(bookshelf).then(function() {
+    return require('./helpers/json/migration')(bookshelf).then(function () {
       return require('./helpers/json/inserts')(bookshelf);
     });
   });
 
-  describe('JSON support', function() {
+  describe('JSON support', function () {
     var Models = require('./helpers/json/objects')(bookshelf).Models;
     var Command = Models.Command;
 
-    it('can `fetch` a model with a JSON column', function() {
+    it('can `fetch` a model with a JSON column', function () {
       return Command.forge({id: 0})
         .fetch()
-        .then(function(command) {
+        .then(function (command) {
           checkResponse(command.attributes, {
             id: 0,
             unit_id: 1,
@@ -49,10 +49,10 @@ module.exports = function(bookshelf) {
         });
     });
 
-    it('returns the correct previous attributes when updating nested objects', function() {
+    it('returns the correct previous attributes when updating nested objects', function () {
       return Command.forge({id: 0})
         .fetch()
-        .then(function(command) {
+        .then(function (command) {
           const newTarget = {x: 7, y: 13};
           const originalInfo = command.get('info');
           const updatedInfo = _.cloneDeep(originalInfo);
@@ -65,14 +65,14 @@ module.exports = function(bookshelf) {
         });
     });
 
-    it('Trying to fetch a model automatically excludes JSON column', function() {
+    it('Trying to fetch a model automatically excludes JSON column', function () {
       return Command.forge({
         unit_id: 1,
         type: 'attack',
         info: {test: 'blah'}
       })
         .fetch()
-        .then(function(command) {
+        .then(function (command) {
           checkResponse(command.attributes, {
             id: 1,
             unit_id: 1,

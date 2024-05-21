@@ -3,23 +3,23 @@ var _ = require('lodash');
 var path = require('path');
 var basePath = process.cwd();
 
-module.exports = function() {
+module.exports = function () {
   const Model = require(path.resolve(basePath, 'lib/model'));
   const Collection = require(path.resolve(basePath, 'lib/collection'));
 
-  describe('Model', function() {
-    describe('#save()', function() {
-      it('should clone the passed in `options` object', function() {
+  describe('Model', function () {
+    describe('#save()', function () {
+      it('should clone the passed in `options` object', function () {
         var model = new Model();
         var options = {
           query: {}
         };
 
-        model.sync = function(opts) {
+        model.sync = function (opts) {
           notStrictEqual(options, opts);
 
           return {
-            insert: function(opts) {
+            insert: function (opts) {
               return Promise.resolve({});
             }
           };
@@ -27,7 +27,7 @@ module.exports = function() {
 
         model.refresh = () => Promise.resolve({});
 
-        return model.save(null, options).then(function() {
+        return model.save(null, options).then(function () {
           equal(_.difference(Object.keys(options), ['query']).length, 0);
         });
       });
@@ -44,7 +44,7 @@ module.exports = function() {
           };
           model.refresh = () => Promise.resolve({});
           const parse = sinon.spy(model, 'parse');
-          return model.save(null, {method: 'update'}).then(function() {
+          return model.save(null, {method: 'update'}).then(function () {
             expect(parse).not.to.have.been.calledWith(undefined);
           });
         });
@@ -60,7 +60,7 @@ module.exports = function() {
           };
           model.refresh = () => Promise.resolve({});
           const parse = sinon.spy(model, 'parse');
-          return model.save(null, {method: 'update'}).then(function(updatedModel) {
+          return model.save(null, {method: 'update'}).then(function (updatedModel) {
             expect(parse).to.have.been.calledWith({newProp: 'a'});
             expect(updatedModel.toJSON()).to.eql({oldProp: 'b', newProp: 'a'});
           });
@@ -80,15 +80,15 @@ module.exports = function() {
           };
           model.refresh = () => Promise.resolve({});
           const parse = sinon.spy(model, 'parse');
-          return model.save(null, {method: 'insert'}).then(function() {
+          return model.save(null, {method: 'insert'}).then(function () {
             expect(parse).not.to.have.been.calledWith('12345');
           });
         });
       });
     });
 
-    describe('#timestamp()', function() {
-      it('will set the updated_at and the created_at attributes to a new date for new models', function() {
+    describe('#timestamp()', function () {
+      it('will set the updated_at and the created_at attributes to a new date for new models', function () {
         var newModel = new Model({}, {hasTimestamps: true});
         newModel.timestamp();
 
@@ -96,7 +96,7 @@ module.exports = function() {
         expect(newModel.get('updated_at')).to.be.an.instanceOf(Date);
       });
 
-      it('will not set the created_at attribute to a new date for existing models', function() {
+      it('will not set the created_at attribute to a new date for existing models', function () {
         var existingModel = new Model({id: 1}, {hasTimestamps: true});
         existingModel.timestamp();
 
@@ -104,7 +104,7 @@ module.exports = function() {
         expect(existingModel.get('updated_at')).to.be.an.instanceOf(Date);
       });
 
-      it('will set the created_at attribute when inserting new models with a predefined id value', function() {
+      it('will set the created_at attribute when inserting new models with a predefined id value', function () {
         var model = new Model({id: 1}, {hasTimestamps: true});
         model.timestamp({method: 'insert'});
 
@@ -112,7 +112,7 @@ module.exports = function() {
         expect(model.get('updated_at')).to.be.an.instanceOf(Date);
       });
 
-      it("will not set timestamps on a model if hasTimestamps isn't set", function() {
+      it("will not set timestamps on a model if hasTimestamps isn't set", function () {
         var model = new Model();
         model.timestamp();
 
@@ -121,7 +121,7 @@ module.exports = function() {
       });
     });
 
-    describe('#toJSON()', function() {
+    describe('#toJSON()', function () {
       let ModelCollection;
       let testModel;
 
@@ -133,13 +133,13 @@ module.exports = function() {
         testModel = new Model({id: 1, firstName: 'Joe', lastName: 'Shmoe', address: '123 Main St.'});
       });
 
-      it('includes the idAttribute in the hash', function() {
+      it('includes the idAttribute in the hash', function () {
         const DifferentModel = Model.extend({idAttribute: '_id'});
         const testModel = new DifferentModel({_id: 1, name: 'Joe'});
         deepEqual(testModel.toJSON(), {_id: 1, name: 'Joe'});
       });
 
-      it('includes the relations loaded on the model', function() {
+      it('includes the relations loaded on the model', function () {
         testModel.relations = {
           someList: new ModelCollection([{id: 1}, {id: 2}])
         };
@@ -149,8 +149,8 @@ module.exports = function() {
         equal(json.someList.length, 2);
       });
 
-      describe('with "shallow" option', function() {
-        it("doesn't include the relations loaded on the model if {shallow: true} is passed", function() {
+      describe('with "shallow" option', function () {
+        it("doesn't include the relations loaded on the model if {shallow: true} is passed", function () {
           testModel.relations = {
             someList: new ModelCollection([{id: 1}, {id: 2}])
           };
@@ -160,8 +160,8 @@ module.exports = function() {
         });
       });
 
-      describe('with "omitNew" option', function() {
-        it('does not omit new models from collections and relations when {omitNew: false} is passed', function() {
+      describe('with "omitNew" option', function () {
+        it('does not omit new models from collections and relations when {omitNew: false} is passed', function () {
           testModel.relations = {
             someList: new ModelCollection([{id: 2}, {attr2: 'Test'}]),
             someRel: new Model({id: 3}),
@@ -177,7 +177,7 @@ module.exports = function() {
           deepEqual(_.keys(json[2]), ['id', 'attr4']);
         });
 
-        it('does not omit new models from collections and relations when omitNew is not specified', function() {
+        it('does not omit new models from collections and relations when omitNew is not specified', function () {
           testModel.relations = {
             someList: new ModelCollection([{id: 2}, {attr2: 'Test'}]),
             someRel: new Model({id: 3}),
@@ -193,7 +193,7 @@ module.exports = function() {
           deepEqual(_.keys(json[2]), ['id', 'attr4']);
         });
 
-        it('omits new models from collections and relations when {omitNew: true} is passed', function() {
+        it('omits new models from collections and relations when {omitNew: true} is passed', function () {
           testModel.relations = {
             someList: new ModelCollection([{id: 2}, {attr2: 'Test'}]),
             someRel: new Model({id: 3}),
@@ -208,60 +208,60 @@ module.exports = function() {
           equal(omitNew[0].someList.length, 1);
         });
 
-        it('returns null for a new model when {omitNew: true} is passed', function() {
+        it('returns null for a new model when {omitNew: true} is passed', function () {
           var testModel = new Model({attr1: 'Test'});
           var omitNew = testModel.toJSON({omitNew: true});
           deepEqual(omitNew, null);
         });
       });
 
-      describe('with "visible" option', function() {
-        it('only shows the fields specified in the model\'s "visible" property', function() {
+      describe('with "visible" option', function () {
+        it('only shows the fields specified in the model\'s "visible" property', function () {
           testModel.visible = ['firstName'];
           deepEqual(testModel.toJSON(), {firstName: 'Joe'});
         });
 
-        it('only shows the fields specified in the "options.visible" property', function() {
+        it('only shows the fields specified in the "options.visible" property', function () {
           const json = testModel.toJSON({visible: ['firstName']});
           deepEqual(json, {firstName: 'Joe'});
         });
 
-        it('allows overriding the model\'s "visible" property with a "options.visible" argument', function() {
+        it('allows overriding the model\'s "visible" property with a "options.visible" argument', function () {
           testModel.visible = ['lastName'];
           const json = testModel.toJSON({visible: ['firstName']});
           deepEqual(json, {firstName: 'Joe'});
         });
       });
 
-      describe('with "hidden" option', function() {
-        it('hides the fields specified in the model\'s "hidden" property', function() {
+      describe('with "hidden" option', function () {
+        it('hides the fields specified in the model\'s "hidden" property', function () {
           testModel.hidden = ['firstName'];
           deepEqual(testModel.toJSON(), {id: 1, lastName: 'Shmoe', address: '123 Main St.'});
         });
 
-        it('hides the fields specified in the "options.hidden" property', function() {
+        it('hides the fields specified in the "options.hidden" property', function () {
           const json = testModel.toJSON({hidden: ['firstName', 'id']});
           deepEqual(json, {lastName: 'Shmoe', address: '123 Main St.'});
         });
 
-        it('prioritizes "hidden" if there are conflicts when using both "hidden" and "visible"', function() {
+        it('prioritizes "hidden" if there are conflicts when using both "hidden" and "visible"', function () {
           testModel.visible = ['firstName', 'lastName'];
           testModel.hidden = ['lastName'];
           deepEqual(testModel.toJSON(), {firstName: 'Joe'});
         });
 
-        it('prioritizes "options.hidden" if there are conflicts when using both "options.hidden" and "options.visible"', function() {
+        it('prioritizes "options.hidden" if there are conflicts when using both "options.hidden" and "options.visible"', function () {
           const json = testModel.toJSON({visible: ['firstName', 'lastName'], hidden: ['lastName']});
           deepEqual(json, {firstName: 'Joe'});
         });
 
-        it('allows overriding the model\'s "hidden" property with a "options.hidden" argument', function() {
+        it('allows overriding the model\'s "hidden" property with a "options.hidden" argument', function () {
           testModel.hidden = ['lastName'];
           const json = testModel.toJSON({hidden: ['firstName', 'id']});
           deepEqual(json, {lastName: 'Shmoe', address: '123 Main St.'});
         });
 
-        it('prioritizes "options.hidden" when overriding both the model\'s "hidden" and "visible" properties with "options.hidden" and "options.visible" arguments', function() {
+        it('prioritizes "options.hidden" when overriding both the model\'s "hidden" and "visible" properties with "options.hidden" and "options.visible" arguments', function () {
           testModel.visible = ['lastName', 'address'];
           testModel.hidden = ['address'];
           const json = testModel.toJSON({visible: ['firstName', 'lastName'], hidden: ['lastName']});
@@ -270,21 +270,21 @@ module.exports = function() {
         });
       });
 
-      it('ignores the model\'s "hidden" and "visible" properties with the "options.visibility" argument', function() {
+      it('ignores the model\'s "hidden" and "visible" properties with the "options.visibility" argument', function () {
         testModel.visible = ['firstName', 'lastName'];
         testModel.hidden = ['lastName'];
         const json = testModel.toJSON({visibility: false});
 
         deepEqual(json, {id: 1, firstName: 'Joe', lastName: 'Shmoe', address: '123 Main St.'});
       });
-      describe('with JSON.stringify', function() {
-        it('serializes correctly', function() {
+      describe('with JSON.stringify', function () {
+        it('serializes correctly', function () {
           testModel.visible = ['firstName'];
 
           deepEqual(JSON.stringify(testModel), '{"firstName":"Joe"}');
         });
 
-        it('serializes correctly when placed as object property', function() {
+        it('serializes correctly when placed as object property', function () {
           testModel.visible = ['firstName'];
           var obj = {
             model: testModel
@@ -292,7 +292,7 @@ module.exports = function() {
           deepEqual(JSON.stringify(obj), '{"model":{"firstName":"Joe"}}');
         });
 
-        it('serializes correctly when placed in an array', function() {
+        it('serializes correctly when placed in an array', function () {
           testModel.visible = ['firstName'];
           var arr = [testModel];
           deepEqual(JSON.stringify(arr), '[{"firstName":"Joe"}]');
@@ -300,24 +300,24 @@ module.exports = function() {
       });
     });
 
-    describe('#hasChanged()', function() {
-      it('returns true if an attribute was set on a new model instance', function() {
+    describe('#hasChanged()', function () {
+      it('returns true if an attribute was set on a new model instance', function () {
         var model = new Model({test: 'something'});
         expect(model.hasChanged('test')).to.be.true;
       });
 
-      it("returns false if the attribute isn't set on a new model instance", function() {
+      it("returns false if the attribute isn't set on a new model instance", function () {
         var model = new Model({test: 'something'});
         expect(model.hasChanged('id')).to.be.false;
       });
 
-      it("returns false if the attribute isn't updated after a sync operation", function() {
+      it("returns false if the attribute isn't updated after a sync operation", function () {
         var model = new Model({test: 'something'});
         model._reset();
         expect(model.hasChanged('test')).to.be.false;
       });
 
-      it('returns true if an existing attribute is updated', function() {
+      it('returns true if an existing attribute is updated', function () {
         var model = new Model({test: 'something'});
 
         model._reset();

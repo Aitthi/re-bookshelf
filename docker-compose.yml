@@ -1,19 +1,18 @@
 version: '3'
 services:
   mysql:
-    image: mysql:5
+    image: mysql:latest
     restart: always
     ports:
     - "3306:3306"
     environment:
-      MYSQL_ALLOW_EMPTY_PASSWORD: bookshelf
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
       MYSQL_DATABASE: bookshelf_test
-      MYSQL_USER: root
-      MYSQL_PASSWORD:
   postgres:
-    image: postgres:9
+    image: postgres:latest
     restart: always
     ports:
     - "5432:5432"
     environment:
       POSTGRES_DB: bookshelf_test
+      POSTGRES_HOST_AUTH_METHOD: trust
