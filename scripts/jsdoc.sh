@@ -9,7 +9,7 @@ rm -rf $static_assets
 mkdir $static_assets
 
 # Create the docs.
-$(npm bin)/jsdoc --configure ./scripts/jsdoc.config.json
+$(pnpm bin)/jsdoc --configure ./scripts/jsdoc.config.json
 
 # Copy file required for custom GitHub pages domain name
 cp CNAME docs/

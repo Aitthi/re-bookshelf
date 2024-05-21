@@ -9,7 +9,7 @@ version="$(get_property 'package.json' 'version')"
 
 echo "(Re)Creating bookshelf-source remote"
 git remote remove bookshelf-source || true
-git remote add bookshelf-source git@github.com:bookshelf/bookshelf.git
+git remote add bookshelf-source https://github.com/Aitthi/re-bookshelf
 
 echo "Regenerating documentation"
 npm run jsdoc
@@ -20,6 +20,6 @@ git add -A && git commit -m "Release $version"
 echo "Tagging version w/ number"
 git tag $version
 
-echo "Pushing commit and tags to source master"
-git push bookshelf-source master
-git push bookshelf-source master --tags
+echo "Pushing commit and tags to source main"
+git push bookshelf-source main
+git push bookshelf-source main --tags

@@ -185,7 +185,7 @@ const BookshelfCollection = (module.exports = CollectionBase.extend(
      *   `{@link Model#idAttribute idAttribute}`.
      * @returns {Collection} The related but empty collection.
      */
-    through: function(Interim, throughForeignKey, otherKey, throughForeignKeyTarget, otherKeyTarget) {
+    through: function (Interim, throughForeignKey, otherKey, throughForeignKeyTarget, otherKeyTarget) {
       return this.relatedData.through(this, Interim, {
         throughForeignKey,
         otherKey,
@@ -227,20 +227,20 @@ const BookshelfCollection = (module.exports = CollectionBase.extend(
      *   queries being run.
      * @returns {Promise&lt;Collection>}
      */
-    fetch: Promise.method(function(options) {
+    fetch: Promise.method(function (options) {
       options = options ? _.clone(options) : {};
       return (
         this.sync(options)
           .select()
           .bind(this)
-          .tap(function(response) {
+          .tap(function (response) {
             if (!response || response.length === 0) {
               throw new this.constructor.EmptyError('EmptyResponse');
             }
           })
 
           // Now, load all of the data onto the collection as necessary.
-          .tap(function(response) {
+          .tap(function (response) {
             return this._handleResponse(response, options);
           })
 
@@ -248,12 +248,12 @@ const BookshelfCollection = (module.exports = CollectionBase.extend(
           // data on the collection, as a side-effect, before we ultimately jump into the
           // next step of the collection. Since the `columns` are only relevant to the current
           // level, ensure those are omitted from the options.
-          .tap(function(response) {
+          .tap(function (response) {
             if (options.withRelated) {
               return this._handleEager(response, _.omit(options, 'columns'));
             }
           })
-          .tap(function(response) {
+          .tap(function (response) {
             /**
              * @event Collection#fetched
              * @tutorial events
@@ -269,7 +269,7 @@ const BookshelfCollection = (module.exports = CollectionBase.extend(
              */
             return this.triggerThen('fetched', this, response, options);
           })
-          .catch(this.constructor.EmptyError, function(err) {
+          .catch(this.constructor.EmptyError, function (err) {
             if (options.require) throw err;
             this.reset([], {silent: true});
           })
@@ -302,7 +302,7 @@ const BookshelfCollection = (module.exports = CollectionBase.extend(
      * @param {Object} [options] Hash of options.
      * @returns {Promise&lt;number|string>}
      */
-    count: Promise.method(function(column, options) {
+    count: Promise.method(function (column, options) {
       if (!_.isString(column)) {
         options = column;
         column = undefined;
@@ -348,7 +348,7 @@ const BookshelfCollection = (module.exports = CollectionBase.extend(
      *  `require: false` option is passed or {@link Model#requireFetch requireFetch} is set to
      *  `false`.
      */
-    fetchOne: Promise.method(function(options) {
+    fetchOne: Promise.method(function (options) {
       const model = new this.model();
       model._knex = this.query().clone();
       this.resetQuery();
@@ -373,7 +373,7 @@ const BookshelfCollection = (module.exports = CollectionBase.extend(
      *   queries being run.
      * @returns {Promise&lt;Collection>} A promise resolving to this {@link Collection collection}.
      */
-    load: Promise.method(function(relations, options) {
+    load: Promise.method(function (relations, options) {
       if (!Array.isArray(relations)) relations = [relations];
       options = _.assignIn({}, options, {
         shallow: true,
@@ -410,7 +410,7 @@ const BookshelfCollection = (module.exports = CollectionBase.extend(
      *   queries being run.
      * @returns {Promise&lt;Model>} A promise resolving with the new {@link Model model}.
      */
-    create: Promise.method(function(model, options) {
+    create: Promise.method(function (model, options) {
       options = options != null ? _.clone(options) : {};
       const relatedData = this.relatedData;
       model = this._prepareModel(model, options);
@@ -423,12 +423,12 @@ const BookshelfCollection = (module.exports = CollectionBase.extend(
       return Helpers.saveConstraints(model, relatedData)
         .save(null, options)
         .bind(this)
-        .then(function() {
+        .then(function () {
           if (relatedData &amp;&amp; relatedData.type === 'belongsToMany') {
             return this.attach(model, _.omit(options, 'query'));
           }
         })
-        .then(function() {
+        .then(function () {
           this.add(model, options);
         })
         .return(model);
@@ -441,7 +441,7 @@ const BookshelfCollection = (module.exports = CollectionBase.extend(
      * @private
      * @returns {Collection} Self, this method is chainable.
      */
-    resetQuery: function() {
+    resetQuery: function () {
       this._knex = null;
       return this;
     },
@@ -482,7 +482,7 @@ const BookshelfCollection = (module.exports = CollectionBase.extend(
      * @returns {Collection|QueryBuilder}
      *   This collection or, if called with no arguments, the underlying query builder.
      */
-    query: function() {
+    query: function () {
       return Helpers.query(this, Array.from(arguments));
     },
 
@@ -555,7 +555,7 @@ const BookshelfCollection = (module.exports = CollectionBase.extend(
      *
      * @private
      */
-    sync: function(options) {
+    sync: function (options) {
       return new Sync(this, options);
     },
 
@@ -573,7 +573,7 @@ const BookshelfCollection = (module.exports = CollectionBase.extend(
      *
      * @private
      */
-    _handleResponse: function(response, options) {
+    _handleResponse: function (response, options) {
       const relatedData = this.relatedData;
 
       this.set(response, {
@@ -581,7 +581,7 @@ const BookshelfCollection = (module.exports = CollectionBase.extend(
         remove: options.remove,
         silent: true,
         parse: true
-      }).invokeMap(function() {
+      }).invokeMap(function () {
         this.formatTimestamps();
         this._reset();
         this._previousAttributes = _.cloneDeep(this.attributes);
@@ -597,13 +597,13 @@ const BookshelfCollection = (module.exports = CollectionBase.extend(
      *
      * @private
      */
-    _handleEager: function(response, options) {
+    _handleEager: function (response, options) {
       return new EagerRelation(this.models, response, new this.model()).fetch(options);
     }
   },
   /** @lends Collection */
   {
-    extended: function(child) {
+    extended: function (child) {
       /**
        * @class Collection.EmptyError
        * @description
@@ -632,10 +632,10 @@ BookshelfCollection.EmptyError = Errors.EmptyError;
     <footer>
       <div>
         Documentation generated by
-        <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a>
+        <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.3</a>
         
           on
-          June 7, 2020
+          May 21, 2024
         
       </div>
     </footer>

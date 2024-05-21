@@ -778,7 +778,7 @@ const BookshelfModel = ModelBase.extend(
       });
     },
 
-    _doFetch: Promise.method(function(attributes, options) {
+    _doFetch: Promise.method(function (attributes, options) {
       options = options ? _.clone(options) : {};
 
       // Run the `first` call on the `sync` object to fetch a single model.
@@ -788,7 +788,7 @@ const BookshelfModel = ModelBase.extend(
           .bind(this)
 
           // Jump the rest of the chain if the response doesn't exist...
-          .tap(function(response) {
+          .tap(function (response) {
             if (!response || response.length === 0) {
               throw new this.constructor.NotFoundError('EmptyResponse');
             }
@@ -801,13 +801,13 @@ const BookshelfModel = ModelBase.extend(
           // data on the model, as a side-effect, before we ultimately jump into the
           // next step of the model. Since the `columns` are only relevant to the
           // current level, ensure those are omitted from the options.
-          .tap(function(response) {
+          .tap(function (response) {
             if (options.withRelated) {
               return this._handleEager(response, _.omit(options, 'columns'));
             }
           })
 
-          .tap(function(response) {
+          .tap(function (response) {
             /**
              * Fired after a `fetch` operation. A promise may be returned from the
              * event handler for async behaviour.
@@ -827,7 +827,7 @@ const BookshelfModel = ModelBase.extend(
             if (!options.silent) return this.triggerThen('fetched', this, response, options);
           })
           .return(this)
-          .catch(this.constructor.NotFoundError, function(err) {
+          .catch(this.constructor.NotFoundError, function (err) {
             if ((this.requireFetch &amp;&amp; options.require !== false) || options.require) throw err;
             return null;
           })
@@ -999,7 +999,7 @@ const BookshelfModel = ModelBase.extend(
      *   queries being run.
      * @returns {Promise&lt;Model>} A promise resolving to this {@link Model model}.
      */
-    load: Promise.method(function(relations, options) {
+    load: Promise.method(function (relations, options) {
       const columns = this.format(_.assignIn({}, this.attributes));
       const withRelated = Array.isArray(relations) ? relations : [relations];
       return this._handleEager([columns], _.assignIn({}, options, {shallow: true, withRelated})).return(this);
@@ -1113,7 +1113,7 @@ const BookshelfModel = ModelBase.extend(
      * @throws {Model.NoRowsUpdatedError}
      * @returns {Promise&lt;Model>} A promise resolving to the saved and updated model.
      */
-    save: Promise.method(function(key, val, options) {
+    save: Promise.method(function (key, val, options) {
       let attrs;
 
       // Handle both `"key", value` and `{key: value}` -style arguments.
@@ -1128,10 +1128,10 @@ const BookshelfModel = ModelBase.extend(
       }
 
       return Promise.bind(this)
-        .then(function() {
+        .then(function () {
           return this.saveMethod(options);
         })
-        .then(function(method) {
+        .then(function (method) {
           // Determine which kind of save we will do: update or insert.
           options.method = method;
 
@@ -1159,7 +1159,7 @@ const BookshelfModel = ModelBase.extend(
             Helpers.saveConstraints(this, this.relatedData);
           }
 
-          const getAttributesToSave = function(method, options, model) {
+          const getAttributesToSave = function (method, options, model) {
             return method === 'update' &amp;&amp; options.patch ? attrs : model.attributes;
           };
 
@@ -1230,10 +1230,10 @@ const BookshelfModel = ModelBase.extend(
             options
           )
             .bind(this)
-            .then(function() {
+            .then(function () {
               return sync[options.method](getAttributesToSave(method, options, this));
             })
-            .then(function(resp) {
+            .then(function (resp) {
               // Only valid for databases that support RETURNING
               const isObjectResponse = resp &amp;&amp; typeof resp[0] === 'object';
 
@@ -1264,7 +1264,7 @@ const BookshelfModel = ModelBase.extend(
               if (options.autoRefresh === false) return this;
               return this.refresh({silent: true, transacting: options.transacting});
             })
-            .then(function() {
+            .then(function () {
               const eventsToTrigger = method === 'insert' ? 'created saved' : 'updated saved';
               this._reset();
 
@@ -1351,12 +1351,12 @@ const BookshelfModel = ModelBase.extend(
      * @returns {Promise&lt;Model>} A promise resolving to the destroyed and thus
      *                           empty model, i.e. all attributes are `undefined`.
      */
-    destroy: Promise.method(function(options) {
+    destroy: Promise.method(function (options) {
       options = options ? _.clone(options) : {};
       const sync = this.sync(options);
       options.query = sync.query;
       return Promise.bind(this)
-        .then(function() {
+        .then(function () {
           /**
            * Destroying event.
            *
@@ -1372,10 +1372,10 @@ const BookshelfModel = ModelBase.extend(
            */
           return this.triggerThen('destroying', this, options);
         })
-        .then(function() {
+        .then(function () {
           return sync.del();
         })
-        .then(function(affectedRows) {
+        .then(function (affectedRows) {
           if (options.require !== false &amp;&amp; affectedRows === 0) {
             throw new this.constructor.NoRowsDeletedError('No Rows Deleted');
           }
@@ -1578,9 +1578,7 @@ const BookshelfModel = ModelBase.extend(
     _handleResponse(response) {
       const relatedData = this.relatedData;
 
-      this.set(this.parse(response[0]), {silent: true})
-        .formatTimestamps()
-        ._reset();
+      this.set(this.parse(response[0]), {silent: true}).formatTimestamps()._reset();
 
       if (relatedData &amp;&amp; relatedData.isJoined()) {
         relatedData.parsePivot([this]);
@@ -1655,10 +1653,10 @@ module.exports = BookshelfModel;
     <footer>
       <div>
         Documentation generated by
-        <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a>
+        <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.3</a>
         
           on
-          June 7, 2020
+          May 21, 2024
         
       </div>
     </footer>

@@ -1,6 +1,6 @@
 var q = null;
 window.PR_SHOULD_USE_CONTINUATION = !0;
-(function() {
+(function () {
   function L(a) {
     function m(a) {
       var f = a.charCodeAt(0);
@@ -9,10 +9,10 @@ window.PR_SHOULD_USE_CONTINUATION = !0;
       return (f = r[b])
         ? f
         : '0' <= b && b <= '7'
-        ? parseInt(a.substring(1), 8)
-        : b === 'u' || b === 'x'
-        ? parseInt(a.substring(2), 16)
-        : a.charCodeAt(1);
+          ? parseInt(a.substring(1), 8)
+          : b === 'u' || b === 'x'
+            ? parseInt(a.substring(2), 16)
+            : a.charCodeAt(1);
     }
     function e(a) {
       if (a < 32) return (a < 16 ? '\\x0' : '\\x') + a.toString(16);
@@ -46,7 +46,7 @@ window.PR_SHOULD_USE_CONTINUATION = !0;
             d < 97 || j > 122 || b.push([Math.max(97, j) & -33, Math.min(d, 122) & -33]));
         }
       }
-      b.sort(function(a, f) {
+      b.sort(function (a, f) {
         return a[0] - f[0] || f[1] - a[1];
       });
       f = [];
@@ -89,7 +89,7 @@ window.PR_SHOULD_USE_CONTINUATION = !0;
             j.length >= 2 && a === '['
               ? (f[c] = h(j))
               : a !== '\\' &&
-                (f[c] = j.replace(/[A-Za-z]/g, function(a) {
+                (f[c] = j.replace(/[A-Za-z]/g, function (a) {
                   a = a.charCodeAt(0);
                   return '[' + String.fromCharCode(a & -33, a | 32) + ']';
                 }));
@@ -187,7 +187,7 @@ window.PR_SHOULD_USE_CONTINUATION = !0;
     }
     var h = {},
       y;
-    (function() {
+    (function () {
       for (var e = a.concat(m), l = [], p = {}, d = 0, g = e.length; d < g; ++d) {
         var r = e[d],
           n = r[3];
@@ -213,13 +213,13 @@ window.PR_SHOULD_USE_CONTINUATION = !0;
           '\'"'
         ])
       : a.multiLineStrings
-      ? m.push([
-          'str',
-          /^(?:'(?:[^'\\]|\\[\S\s])*(?:'|$)|"(?:[^"\\]|\\[\S\s])*(?:"|$)|`(?:[^\\`]|\\[\S\s])*(?:`|$))/,
-          q,
-          '\'"`'
-        ])
-      : m.push(['str', /^(?:'(?:[^\n\r'\\]|\\.)*(?:'|$)|"(?:[^\n\r"\\]|\\.)*(?:"|$))/, q, '"\'']);
+        ? m.push([
+            'str',
+            /^(?:'(?:[^'\\]|\\[\S\s])*(?:'|$)|"(?:[^"\\]|\\[\S\s])*(?:"|$)|`(?:[^\\`]|\\[\S\s])*(?:`|$))/,
+            q,
+            '\'"`'
+          ])
+        : m.push(['str', /^(?:'(?:[^\n\r'\\]|\\.)*(?:'|$)|"(?:[^\n\r"\\]|\\.)*(?:"|$))/, q, '"\'']);
     a.verbatimStrings && e.push(['str', /^@"(?:[^"]|"")*(?:"|$)/, q]);
     var h = a.hashComments;
     h &&
@@ -408,7 +408,8 @@ window.PR_SHOULD_USE_CONTINUATION = !0;
       'alias,and,begin,case,class,def,defined,elsif,end,ensure,false,in,module,next,nil,not,or,redo,rescue,retry,self,super,then,true,undef,unless,until,when,yield,BEGIN,END'
     ],
     v = [v, 'case,done,elif,esac,eval,fi,function,in,local,set,then,until'],
-    K = /^(DIR|FILE|vector|(de|priority_)?queue|list|stack|(const_)?iterator|(multi)?(set|map)|bitset|u?(int|float)\d*)/,
+    K =
+      /^(DIR|FILE|vector|(de|priority_)?queue|list|stack|(const_)?iterator|(multi)?(set|map)|bitset|u?(int|float)\d*)/,
     N = /\S/,
     O = u({
       keywords: [
@@ -498,14 +499,14 @@ window.PR_SHOULD_USE_CONTINUATION = !0;
     ['coffee']
   );
   k(x([], [['str', /^[\S\s]+/]]), ['regex']);
-  window.prettyPrintOne = function(a, m, e) {
+  window.prettyPrintOne = function (a, m, e) {
     var h = document.createElement('PRE');
     h.innerHTML = a;
     e && D(h, e);
     E({g: m, i: e, h: h});
     return h.innerHTML;
   };
-  window.prettyPrint = function(a) {
+  window.prettyPrint = function (a) {
     function m() {
       for (var e = window.PR_SHOULD_USE_CONTINUATION ? l.now() + 250 : Infinity; p < h.length && l.now() < e; p++) {
         var n = h[p],
@@ -557,7 +558,7 @@ window.PR_SHOULD_USE_CONTINUATION = !0;
       l = Date;
     l.now ||
       (l = {
-        now: function() {
+        now: function () {
           return +new Date();
         }
       });

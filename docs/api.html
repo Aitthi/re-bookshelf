@@ -701,7 +701,8 @@ module.exports = function(bookshelf) {
       return bookshelf.Model.prototype.set.call(this, key, value, options)
     }
   })
-}</code></pre>
+}
+</code></pre>
     </div>
   
 </div>
@@ -1407,7 +1408,8 @@ actual constructor function for your model.</p>
       options.query.where('type', '=', 'book');
     });
   }
-});</code></pre>
+});
+</code></pre>
     </div>
   
 </div>
@@ -1550,7 +1552,8 @@ your super (extended) class.  e.g.</p>
 <pre><code>initialize: function() {
     this.constructor.__super__.initialize.apply(this, arguments);
     // Your initialization code ...
-}</code></pre>
+}
+</code></pre>
     </div>
   
 </div>
@@ -4911,7 +4914,8 @@ new Book({'ISBN-13': '9780440180296'}).fetch({
   console.log(book.related('genre').toJSON());
   console.log(book.related('editions').toJSON());
   console.log(book.toJSON());
-});</code></pre>
+});
+</code></pre>
     </div>
   
 </div>
@@ -6921,7 +6925,8 @@ store/retrieve a different value in the <code>_type</code> column than the <code
   photos: function() {
     return this.morphMany('Photo', 'imageable', ['ImageableType', 'ImageableId']);
   }
-});</code></pre>
+});
+</code></pre>
     </div>
   
 </div>
@@ -7328,7 +7333,8 @@ name that betters adheres to whatever standard you are using for models:</p>
   imageable() {
     return this.morphTo('imageable', ['Site', 'favicon'], ['Post', 'cover_photo'])
   }
-})</code></pre>
+})
+</code></pre>
     </div>
   
 </div>
@@ -11752,7 +11758,7 @@ event handler for async behaviour.</p>
                 ><span class="class-name"
                   >model</span
                 >.</span><span class="event-on">on</span><span class="parenthesis">(</span><a href="api.html#Model-event-fetching">"fetching"</a><span class="comma">, </span> <span class="parenthesis">(</span><span class="item-name">model</span><span class="comma">, </span><span class="item-name">columns</span><span class="comma">, </span><span class="item-name">options</span><span class="parenthesis">)</span> <span class="fat-arrow">=&gt;</span>
-          <a href="lib_sync.js.html#line179" class="source-link">source</a>
+          <a href="lib_sync.js.html#line177" class="source-link">source</a>
         </h4>
 
         
@@ -13026,7 +13032,7 @@ may be returned from the event handler for async behaviour.</p>
                 ><span class="class-name"
                   >Model</span
                 >.</span><span class="parameters"><span class="name"><a href="api.html#Model-static-NoRowsDeletedError">NoRowsDeletedError</a></span><span class="parenthesis">(</span><span class="parenthesis">)</span></span><span class="type-signature"></span>
-          <a href="lib_model.js.html#line1548" class="source-link">source</a>
+          <a href="lib_model.js.html#line1546" class="source-link">source</a>
         </h4>
 
         
@@ -13163,7 +13169,7 @@ unless called with the <code>{require: false}</code> option.</p>
                 ><span class="class-name"
                   >Model</span
                 >.</span><span class="parameters"><span class="name"><a href="api.html#Model-static-NoRowsUpdatedError">NoRowsUpdatedError</a></span><span class="parenthesis">(</span><span class="parenthesis">)</span></span><span class="type-signature"></span>
-          <a href="lib_model.js.html#line1540" class="source-link">source</a>
+          <a href="lib_model.js.html#line1538" class="source-link">source</a>
         </h4>
 
         
@@ -13300,7 +13306,7 @@ unless called with the <code>{require: false}</code> option.</p>
                 ><span class="class-name"
                   >Model</span
                 >.</span><span class="parameters"><span class="name"><a href="api.html#Model-static-NotFoundError">NotFoundError</a></span><span class="parenthesis">(</span><span class="parenthesis">)</span></span><span class="type-signature"></span>
-          <a href="lib_model.js.html#line1531" class="source-link">source</a>
+          <a href="lib_model.js.html#line1529" class="source-link">source</a>
         </h4>
 
         
@@ -13616,7 +13622,8 @@ const Tests = bookshelf.collection('Tests', {
     // This method will be available in the results collection returned
     // by Test.fetchAll() and Test.fetchPage()
   }
-})</code></pre>
+})
+</code></pre>
     </div>
   
 </div>
@@ -13715,7 +13722,8 @@ your super (extended) class. e.g.</p>
 <pre><code>initialize: function() {
   this.constructor.__super__.initialize.apply(this, arguments);
   // Your initialization code ...
-}</code></pre>
+}
+</code></pre>
     </div>
   
 </div>
@@ -13748,7 +13756,7 @@ your super (extended) class. e.g.</p>
                 ><span class="class-name"
                   >Collection</span
                 >.</span><span class="parameters"><span class="name"><a href="api.html#Collection-static-extend">extend</a></span><span class="parenthesis">(</span><span class="optional-bracket">[</span><span class="item-name">prototypeProperties</span><span class="optional-bracket">]</span><span class="comma">, </span><span class="optional-bracket">[</span><span class="item-name">classProperties</span><span class="optional-bracket">]</span><span class="parenthesis">)</span></span><span class="type-signature"> &rarr;  function</span>
-          <a href="lib_base_collection.js.html#line785" class="source-link">source</a>
+          <a href="lib_base_collection.js.html#line780" class="source-link">source</a>
         </h4>
 
         
@@ -15249,7 +15257,7 @@ specified by separating the nested relations with <code>.</code>.</p>
                 ><span class="class-name"
                   >collection</span
                 >.</span><span class="parameters"><span class="name"><a href="api.html#Collection-instance-add">add</a></span><span class="parenthesis">(</span><span class="item-name">models</span><span class="comma">, </span><span class="optional-bracket">[</span><span class="item-name">options</span><span class="optional-bracket">]</span><span class="parenthesis">)</span></span><span class="type-signature"> &rarr;  <a href="api.html#Collection">Collection</a></span>
-          <a href="lib_base_collection.js.html#line455" class="source-link">source</a>
+          <a href="lib_base_collection.js.html#line450" class="source-link">source</a>
         </h4>
 
         
@@ -15467,7 +15475,7 @@ corresponding models.</p>
                 ><span class="class-name"
                   >collection</span
                 >.</span><span class="parameters"><span class="name"><a href="api.html#Collection-instance-at">at</a></span><span class="parenthesis">(</span><span class="parenthesis">)</span></span><span class="type-signature"></span>
-          <a href="lib_base_collection.js.html#line595" class="source-link">source</a>
+          <a href="lib_base_collection.js.html#line590" class="source-link">source</a>
         </h4>
 
         
@@ -15554,7 +15562,7 @@ models in insertion order.</p>
                 ><span class="class-name"
                   >collection</span
                 >.</span><span class="parameters"><span class="name"><a href="api.html#Collection-instance-attach">attach</a></span><span class="parenthesis">(</span><span class="item-name">ids</span><span class="comma">, </span><span class="item-name">options</span><span class="parenthesis">)</span></span><span class="type-signature"> &rarr;  Promise<<a href="api.html#Collection">Collection</a>></span>
-          <a href="lib_relation.js.html#line661" class="source-link">source</a>
+          <a href="lib_relation.js.html#line655" class="source-link">source</a>
         </h4>
 
         
@@ -15743,7 +15751,7 @@ returned by a <a href="api.html#Model-instance-belongsToMany"><code>belongsToMan
                 ><span class="class-name"
                   >collection</span
                 >.</span><span class="parameters"><span class="name"><a href="api.html#Collection-instance-clone">clone</a></span><span class="parenthesis">(</span><span class="parenthesis">)</span></span><span class="type-signature"></span>
-          <a href="lib_base_collection.js.html#line650" class="source-link">source</a>
+          <a href="lib_base_collection.js.html#line645" class="source-link">source</a>
         </h4>
 
         
@@ -15833,7 +15841,7 @@ returned by a <a href="api.html#Model-instance-belongsToMany"><code>belongsToMan
                 ><span class="class-name"
                   >collection</span
                 >.</span><span class="parameters"><span class="name"><a href="api.html#Collection-instance-detach">detach</a></span><span class="parenthesis">(</span><span class="optional-bracket">[</span><span class="item-name">ids</span><span class="optional-bracket">]</span><span class="comma">, </span><span class="item-name">options</span><span class="parenthesis">)</span></span><span class="type-signature"> &rarr;  Promise<undefined></span>
-          <a href="lib_relation.js.html#line698" class="source-link">source</a>
+          <a href="lib_relation.js.html#line692" class="source-link">source</a>
         </h4>
 
         
@@ -16117,7 +16125,7 @@ by a <a href="api.html#Model-instance-belongsToMany"><code>belongsToMany</code><
                 ><span class="class-name"
                   >collection</span
                 >.</span><span class="parameters"><span class="name"><a href="api.html#Collection-instance-get">get</a></span><span class="parenthesis">(</span><span class="parenthesis">)</span></span><span class="type-signature"> &rarr;  <a href="api.html#Model">Model</a></span>
-          <a href="lib_base_collection.js.html#line583" class="source-link">source</a>
+          <a href="lib_base_collection.js.html#line578" class="source-link">source</a>
         </h4>
 
         
@@ -16227,7 +16235,7 @@ by a <a href="api.html#Model-instance-belongsToMany"><code>belongsToMany</code><
                 ><span class="class-name"
                   >collection</span
                 >.</span><span class="parameters"><span class="name"><a href="api.html#Collection-instance-invokeThen">invokeThen</a></span><span class="parenthesis">(</span><span class="item-name">method</span><span class="comma">, </span><span class="variable-ellipsis">&hellip;</span><span class="item-name">arguments</span><span class="parenthesis">)</span></span><span class="type-signature"> &rarr;  Promise<mixed[]></span>
-          <a href="lib_base_collection.js.html#line381" class="source-link">source</a>
+          <a href="lib_base_collection.js.html#line379" class="source-link">source</a>
         </h4>
 
         
@@ -16367,7 +16375,8 @@ bulk saving or deleting models:</p>
 
 collection.invokeThen('destroy', options).then(function() {
   // ... all models in the collection have been destroyed
-});</code></pre>
+});
+</code></pre>
     </div>
   
 </div>
@@ -16965,7 +16974,7 @@ table will be the table name of the model <code>orderBy</code> was called on.</p
                 ><span class="class-name"
                   >collection</span
                 >.</span><span class="parameters"><span class="name"><a href="api.html#Collection-instance-parse">parse</a></span><span class="parenthesis">(</span><span class="item-name">resp</span><span class="parenthesis">)</span></span><span class="type-signature"></span>
-          <a href="lib_base_collection.js.html#line641" class="source-link">source</a>
+          <a href="lib_base_collection.js.html#line636" class="source-link">source</a>
         </h4>
 
         
@@ -17080,7 +17089,7 @@ the JSON response.</p>
                 ><span class="class-name"
                   >collection</span
                 >.</span><span class="parameters"><span class="name"><a href="api.html#Collection-instance-pluck">pluck</a></span><span class="parenthesis">(</span><span class="parenthesis">)</span></span><span class="type-signature"> &rarr;  mixed[]</span>
-          <a href="lib_base_collection.js.html#line626" class="source-link">source</a>
+          <a href="lib_base_collection.js.html#line621" class="source-link">source</a>
         </h4>
 
         
@@ -17183,7 +17192,7 @@ the JSON response.</p>
                 ><span class="class-name"
                   >collection</span
                 >.</span><span class="parameters"><span class="name"><a href="api.html#Collection-instance-pop">pop</a></span><span class="parenthesis">(</span><span class="parenthesis">)</span></span><span class="type-signature"></span>
-          <a href="lib_base_collection.js.html#line535" class="source-link">source</a>
+          <a href="lib_base_collection.js.html#line530" class="source-link">source</a>
         </h4>
 
         
@@ -17268,7 +17277,7 @@ the JSON response.</p>
                 ><span class="class-name"
                   >collection</span
                 >.</span><span class="parameters"><span class="name"><a href="api.html#Collection-instance-push">push</a></span><span class="parenthesis">(</span><span class="item-name">model</span><span class="parenthesis">)</span></span><span class="type-signature"> &rarr;  <a href="api.html#Collection">Collection</a></span>
-          <a href="lib_base_collection.js.html#line526" class="source-link">source</a>
+          <a href="lib_base_collection.js.html#line521" class="source-link">source</a>
         </h4>
 
         
@@ -17576,7 +17585,7 @@ context and the first argument.</p>
                 ><span class="class-name"
                   >collection</span
                 >.</span><span class="parameters"><span class="name"><a href="api.html#Collection-instance-reduceThen">reduceThen</a></span><span class="parenthesis">(</span><span class="item-name">iterator</span><span class="comma">, </span><span class="item-name">initialValue</span><span class="comma">, </span><span class="item-name">context</span><span class="parenthesis">)</span></span><span class="type-signature"> &rarr;  Promise<mixed></span>
-          <a href="lib_base_collection.js.html#line408" class="source-link">source</a>
+          <a href="lib_base_collection.js.html#line406" class="source-link">source</a>
         </h4>
 
         
@@ -17749,7 +17758,7 @@ given iterator function.</p>
                 ><span class="class-name"
                   >collection</span
                 >.</span><span class="parameters"><span class="name"><a href="api.html#Collection-instance-remove">remove</a></span><span class="parenthesis">(</span><span class="item-name">models</span><span class="comma">, </span><span class="optional-bracket">[</span><span class="item-name">options</span><span class="optional-bracket">]</span><span class="parenthesis">)</span></span><span class="type-signature"> &rarr;  <a href="api.html#Model">Model</a>|<a href="api.html#Model">Model</a>[]</span>
-          <a href="lib_base_collection.js.html#line474" class="source-link">source</a>
+          <a href="lib_base_collection.js.html#line469" class="source-link">source</a>
         </h4>
 
         
@@ -17913,7 +17922,8 @@ models from the database. For that purpose you have to use the model's <a href="
 <p>If you wish to actually remove all the models in a collection from the database you can use this method:</p>
 <pre><code>myCollection.invokeThen('destroy').then(() =&gt; {
   // models have been destroyed
-})</code></pre>
+})
+</code></pre>
     </div>
   
 </div>
@@ -17930,7 +17940,7 @@ models from the database. For that purpose you have to use the model's <a href="
                 ><span class="class-name"
                   >collection</span
                 >.</span><span class="parameters"><span class="name"><a href="api.html#Collection-instance-reset">reset</a></span><span class="parenthesis">(</span><span class="item-name">models</span><span class="comma">, </span><span class="item-name">options</span><span class="parenthesis">)</span></span><span class="type-signature"> &rarr;  <a href="api.html#Model">Model</a>[]</span>
-          <a href="lib_base_collection.js.html#line509" class="source-link">source</a>
+          <a href="lib_base_collection.js.html#line504" class="source-link">source</a>
         </h4>
 
         
@@ -18523,7 +18533,7 @@ option.</p>
                 ><span class="class-name"
                   >collection</span
                 >.</span><span class="parameters"><span class="name"><a href="api.html#Collection-instance-shift">shift</a></span><span class="parenthesis">(</span><span class="parenthesis">)</span></span><span class="type-signature"></span>
-          <a href="lib_base_collection.js.html#line555" class="source-link">source</a>
+          <a href="lib_base_collection.js.html#line550" class="source-link">source</a>
         </h4>
 
         
@@ -18608,7 +18618,7 @@ option.</p>
                 ><span class="class-name"
                   >collection</span
                 >.</span><span class="parameters"><span class="name"><a href="api.html#Collection-instance-slice">slice</a></span><span class="parenthesis">(</span><span class="parenthesis">)</span></span><span class="type-signature"></span>
-          <a href="lib_base_collection.js.html#line566" class="source-link">source</a>
+          <a href="lib_base_collection.js.html#line561" class="source-link">source</a>
         </h4>
 
         
@@ -19294,7 +19304,7 @@ async event handlers (e.g. for validations).</p>
                 ><span class="class-name"
                   >collection</span
                 >.</span><span class="parameters"><span class="name"><a href="api.html#Collection-instance-unshift">unshift</a></span><span class="parenthesis">(</span><span class="parenthesis">)</span></span><span class="type-signature"></span>
-          <a href="lib_base_collection.js.html#line546" class="source-link">source</a>
+          <a href="lib_base_collection.js.html#line541" class="source-link">source</a>
         </h4>
 
         
@@ -19379,7 +19389,7 @@ async event handlers (e.g. for validations).</p>
                 ><span class="class-name"
                   >collection</span
                 >.</span><span class="parameters"><span class="name"><a href="api.html#Collection-instance-updatePivot">updatePivot</a></span><span class="parenthesis">(</span><span class="item-name">attributes</span><span class="comma">, </span><span class="optional-bracket">[</span><span class="item-name">options</span><span class="optional-bracket">]</span><span class="parenthesis">)</span></span><span class="type-signature"> &rarr;  Promise<Number></span>
-          <a href="lib_relation.js.html#line725" class="source-link">source</a>
+          <a href="lib_relation.js.html#line719" class="source-link">source</a>
         </h4>
 
         
@@ -19763,7 +19773,7 @@ adding a <code>WHERE</code> clause to the builder. Any additional knex methods m
                 ><span class="class-name"
                   >collection</span
                 >.</span><span class="parameters"><span class="name"><a href="api.html#Collection-instance-withPivot">withPivot</a></span><span class="parenthesis">(</span><span class="item-name">columns</span><span class="parenthesis">)</span></span><span class="type-signature"> &rarr;  <a href="api.html#Collection">Collection</a></span>
-          <a href="lib_relation.js.html#line753" class="source-link">source</a>
+          <a href="lib_relation.js.html#line747" class="source-link">source</a>
         </h4>
 
         
@@ -19881,7 +19891,8 @@ from the joining table.</p>
   comments: function() {
     return this.belongsToMany(Comment).withPivot(['created_at', 'order']);
   }
-});</code></pre>
+});
+</code></pre>
     </div>
   
 </div>
@@ -19992,7 +20003,7 @@ from the joining table.</p>
           <span class="type-signature"></span>
           
           <span class="parameters"><span class="name"><a href="api.html#Collection~reduceThenIterator">reduceThenIterator</a></span><span class="parenthesis">(</span><span class="item-name">acumulator</span><span class="comma">, </span><span class="item-name">model</span><span class="comma">, </span><span class="item-name">index</span><span class="comma">, </span><span class="item-name">length</span><span class="parenthesis">)</span></span><span class="type-signature"></span>
-          <a href="lib_base_collection.js.html#line385" class="source-link">source</a>
+          <a href="lib_base_collection.js.html#line383" class="source-link">source</a>
         </h4>
 
         
@@ -21319,10 +21330,10 @@ async event handlers (e.g. for validations).</p>
     <footer>
       <div>
         Documentation generated by
-        <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a>
+        <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.3</a>
         
           on
-          June 7, 2020
+          May 21, 2024
         
       </div>
     </footer>

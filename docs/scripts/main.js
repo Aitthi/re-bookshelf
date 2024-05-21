@@ -1,4 +1,4 @@
-(function() {
+(function () {
   var navbarHeight = document.querySelector('.main-navbar').offsetHeight;
 
   function scrollWithOffset() {
